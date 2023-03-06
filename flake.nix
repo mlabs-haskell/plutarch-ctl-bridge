@@ -14,19 +14,9 @@
       url = "github:Liqwid-Labs/liqwid-libs";
     };
     nix-filter.url = "github:numtide/nix-filter";
-
-    # CTL - tests only
     spago2nix = {
       url = "github:justinwoo/spago2nix";
     };
-    liqwid-ctl-extra = {
-      url = "git+ssh://git@github.com/Liqwid-Labs/liqwid-ctl-extra.git?rev=1cfde97875244ea0a1477bd869ebb23e98cb3dd9";
-      flake = false;
-    };
-    cardano-transaction-lib = {
-      url = "github:Plutonomicon/cardano-transaction-lib?rev=687b89d1ab074820698fdf785979cd22cac5fcda";
-    };
-    nixpkgs-ctl.follows = "cardano-transaction-lib/nixpkgs";
   };
 
   outputs = inputs@{ flake-parts, ... }:
@@ -60,6 +50,7 @@
           hasktags = { };
           shell.extraCommandLineTools = [
             inputs'.spago2nix.packages.spago2nix
+            inputs'.nixpkgs-fmt
           ];
           hoogleImage = { };
           enableBuildChecks = true;

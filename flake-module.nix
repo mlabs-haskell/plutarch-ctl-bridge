@@ -109,35 +109,35 @@ in
                 builtins.listToAttrs
                   (lib.attrsets.mapAttrsToList mkPackage config.ctlBridge);
 
-              offchain =
-                let
-                  mkOffchain = name: conf: {
-                    name = "offchain-${name}";
-                    value = {
-                      src = self'.packages."ctl-bridge-${name}";
-                      inherit (conf) packageJson packageLock;
+              # offchain =
+              #   let
+              #     mkOffchain = name: conf: {
+              #       name = "offchain-${name}";
+              #       value = {
+              #         src = self'.packages."ctl-bridge-${name}";
+              #         inherit (conf) packageJson packageLock;
 
-                      spagoOverride = {
-                        "liqwid-ctl-extra" = self.inputs.liqwid-ctl-extra;
-                      };
+              #         spagoOverride = {
+              #           "liqwid-ctl-extra" = self.inputs.liqwid-ctl-extra;
+              #         };
 
-                      runtime = {
-                        enableCtlServer = false;
-                        exposeConfig = false;
-                      };
+              #         runtime = {
+              #           enableCtlServer = false;
+              #           exposeConfig = false;
+              #         };
 
-                      ignoredWarningCodes = [
-                        "ImplicitImport"
-                        "UserDefinedWarning"
-                        "WildcardInferredType"
-                      ];
+              #         ignoredWarningCodes = [
+              #           "ImplicitImport"
+              #           "UserDefinedWarning"
+              #           "WildcardInferredType"
+              #         ];
 
-                      enableFormatCheck = true;
-                    };
-                  };
-                in
-                builtins.listToAttrs
-                  (lib.attrsets.mapAttrsToList mkOffchain config.ctlBridge);
+              #         enableFormatCheck = true;
+              #       };
+              #     };
+              #   in
+              #   builtins.listToAttrs
+              #     (lib.attrsets.mapAttrsToList mkOffchain config.ctlBridge);
             };
           });
   };

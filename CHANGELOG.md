@@ -4,6 +4,10 @@ This format is based on [Keep A Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## Unreleased
 
+## 1.4.1 - 2023-03-06
+
+- Disable test generator (hotfix)
+
 ## 1.4.0 - 2023-03-06
 
 - Compile generated module on a CI
