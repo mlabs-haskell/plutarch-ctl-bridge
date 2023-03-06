@@ -41,6 +41,11 @@ ctlBridge =
         "Contract.PlutusData"
         [ "OutputDatum"
         ]
+    , overrideModuleAndTypeName
+        "PlutusLedgerApi.V1.Scripts"
+        "DatumHash"
+        "Contract.PlutusData"
+        "DataHash"
     , overrideModuleFor
         "PlutusTx.Ratio"
         "Contract.Numeric.Rational"
@@ -57,6 +62,11 @@ ctlBridge =
         [ "Value"
         , "TokenName"
         , "CurrencySymbol"
+        ]
+    , overrideModuleFor
+        "PlutusLedgerApi.V1.Scripts"
+        "Contract.Scripts"
+        [ "ScriptHash"
         ]
     , -- Override for 'Rational'. Type synonyms must be expanded by hand
       overrideModuleFor'
