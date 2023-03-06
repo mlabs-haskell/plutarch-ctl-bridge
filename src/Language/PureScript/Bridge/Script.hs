@@ -131,7 +131,9 @@ exportScriptWith config scriptName script =
       | "59" `Text.isPrefixOf` inp = Text.drop (2 + 4) inp
       | "5a" `Text.isPrefixOf` inp = Text.drop (2 + 8) inp
       | "5b" `Text.isPrefixOf` inp = Text.drop (2 + 16) inp
-      | otherwise = error "decodeByteString: Invalid CBOR encoding"
+      | "5" `Text.isPrefixOf` inp = Text.drop 2 inp
+      | "4" `Text.isPrefixOf` inp = Text.drop 2 inp
+      | otherwise = error $ "decodeByteString: Invalid CBOR encoding: " <> show inp
 
     -- Why do we need this roundtrip? I don't know, but it doesn't work without it.
     scriptBytes :: Text
