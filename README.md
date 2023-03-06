@@ -67,6 +67,6 @@ data MySop
 
 If your types are not serialized using above set of rules, use `mkSumTypeWithEncoding` to bridge it to specify encoding flavor. Types bridged with `mkSumTypeWithEncoding` are NOT guaranteed to be correct PureScript code, so make sure you know what you're doing. If you have control over bridge types, make them follow above rules, to guarantee optimal encoding and bridge correctness.
 
-## Knwon issues
+## Known issues
 
 Some PlutusTx types may not be overridden yet to match with CTL equivalents. If you notice some type missing please add it to `Language.PureScript.Bridge.CtlImports` and open a PR.

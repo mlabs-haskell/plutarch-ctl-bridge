@@ -5,7 +5,7 @@ module Language.PureScript.Bridge.Script (
   ExportableScript,
   ScriptType,
   SScriptType (..),
-  writeModule,
+  writeScriptModule,
   generateModule,
 ) where
 
@@ -53,7 +53,7 @@ type ExportableScript (script :: PType) (scriptType :: ScriptType) =
   ReifyHaskTypes (GetHaskParams script scriptType)
 
 -- | Create a module @<parent-module>.<script-name>@ with embedded Plutarch script
-writeModule ::
+writeScriptModule ::
   forall (script :: PType) (scriptType :: ScriptType).
   ExportableScript script scriptType =>
   -- | Output file
@@ -65,7 +65,7 @@ writeModule ::
   SScriptType scriptType ->
   ClosedTerm script ->
   IO ()
-writeModule fp parentModule scriptName scriptType script =
+writeScriptModule fp parentModule scriptName scriptType script =
   let
     moduleName = firstToUpper scriptName
     code = generateModule (parentModule <> "." <> moduleName) scriptName script scriptType

@@ -12,7 +12,7 @@ import Language.PureScript.Bridge (
   mkSumType,
   writePSTypes,
  )
-import Language.PureScript.Bridge.Script (SScriptType (SMinting), writeModule)
+import Language.PureScript.Bridge.Script (SScriptType (SMinting), writeScriptModule)
 import Plutarch.Api.V1.Value (PCurrencySymbol)
 import Plutarch.Api.V2 (PMintingPolicy)
 import Plutarch.DataRepr (PDataFields)
@@ -70,4 +70,4 @@ typesToBridge =
 main :: IO ()
 main = do
   writePSTypes "./out" (buildBridge defaultBridge) typesToBridge
-  writeModule "./out/Example/Scripts" "ExamplePolicy" "examplePolicy" SMinting examplePolicy
+  writeScriptModule "./out/Example/Scripts" "ExamplePolicy" "examplePolicy" SMinting examplePolicy
