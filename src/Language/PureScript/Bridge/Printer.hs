@@ -117,9 +117,9 @@ baselineImports =
   , ImportLine "Ctl.Internal.Types.PlutusData" Nothing $ Set.fromList ["PlutusData(Integer)"]
   , ImportLine "Ctl.Internal.Plutus.Types.DataSchema" Nothing $ Set.fromList ["class HasPlutusSchema", "type (:+)", "type (:=)", "type (@@)", "I", "PNil"]
   , ImportLine "Ctl.Internal.TypeLevel.Nat" Nothing $ Set.fromList ["S", "Z"]
-  , -- From agora-purescript-bridge
-    ImportLine "Utils.IsData" Nothing $ Set.fromList ["productFromData", "productToData"]
-  , ImportLine "Utils.FieldOrder" Nothing $ Set.fromList ["class FieldOrder"]
+  , -- From liqwid-ctl-extra
+    ImportLine "Ctl.Extra.IsData" Nothing $ Set.fromList ["productFromData", "productToData"]
+  , ImportLine "Ctl.Extra.FieldOrder" Nothing $ Set.fromList ["class FieldOrder"]
   , ImportLine "Prim.RowList" Nothing $ Set.fromList ["Cons", "Nil"]
   ]
 

@@ -68,6 +68,11 @@ ctlBridge =
         "Contract.Scripts"
         [ "ScriptHash"
         ]
+    , overrideModuleFor
+        "Data.Tagged"
+        "Ctl.Extra.Tagged"
+        [ "Tagged"
+        ]
     , -- Override for 'Rational'. Type synonyms must be expanded by hand
       overrideModuleFor'
         "GHC.Real"
