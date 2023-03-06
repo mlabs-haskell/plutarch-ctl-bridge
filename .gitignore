@@ -1,0 +1,25 @@
+# Cabal
+dist/
+dist-newstyle
+
+# Nix
+result*
+
+# Tags/Editor integration
+tags
+TAGS
+.vscode
+
+# Haddock/Hoogle
+haddock
+hoo
+
+# Direnv
+.envrc
+.direnv/
+
+# This magic dir that apperas out of nowhere
+clear\ /
+
+# CTL bridge result
+auto-ctl-gen

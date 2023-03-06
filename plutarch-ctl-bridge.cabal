@@ -1,0 +1,167 @@
+cabal-version:      3.0
+name:               plutarch-ctl-bridge
+version:            0.1.0
+extra-source-files: CHANGELOG.md
+author:             Tomasz Maciosowski <tomasz@mlabs.city>
+copyright:          (c) 2023 Clear Contracts
+license:            BSD-3-Clause
+
+--------------------------------------------------------------------------------
+-- Common Stanza Declarations
+
+-- Language options, warnings, some options for plutus
+
+common lang
+  ghc-options:
+    -Werror -Wall -Wcompat -Wincomplete-uni-patterns
+    -Wno-unused-do-bind -Wno-partial-type-signatures
+    -Wmissing-export-lists -Wincomplete-record-updates
+    -Wmissing-deriving-strategies -Wno-name-shadowing -Wunused-foralls
+    -fprint-explicit-foralls -fprint-explicit-kinds -Wunused-do-bind
+
+  default-extensions:
+    NoStarIsType
+    BangPatterns
+    BinaryLiterals
+    ConstrainedClassMethods
+    ConstraintKinds
+    DataKinds
+    DeriveAnyClass
+    DeriveDataTypeable
+    DeriveFoldable
+    DeriveFunctor
+    DeriveGeneric
+    DeriveLift
+    DeriveTraversable
+    DerivingStrategies
+    DerivingVia
+    DoAndIfThenElse
+    DuplicateRecordFields
+    EmptyCase
+    EmptyDataDecls
+    EmptyDataDeriving
+    ExistentialQuantification
+    ExplicitForAll
+    FlexibleContexts
+    FlexibleInstances
+    ForeignFunctionInterface
+    GADTSyntax
+    GeneralisedNewtypeDeriving
+    HexFloatLiterals
+    ImplicitPrelude
+    ImportQualifiedPost
+    InstanceSigs
+    KindSignatures
+    LambdaCase
+    MonomorphismRestriction
+    MultiParamTypeClasses
+    NamedFieldPuns
+    NamedWildCards
+    NumericUnderscores
+    OverloadedLabels
+    OverloadedRecordDot
+    OverloadedStrings
+    PackageImports
+    PartialTypeSignatures
+    PatternGuards
+    PolyKinds
+    PostfixOperators
+    QualifiedDo
+    RankNTypes
+    RelaxedPolyRec
+    ScopedTypeVariables
+    StandaloneDeriving
+    StandaloneKindSignatures
+    TupleSections
+    TypeApplications
+    TypeFamilies
+    TypeOperators
+    TypeSynonymInstances
+    UndecidableInstances
+    ViewPatterns
+
+  default-language:   Haskell2010
+
+common deps
+  build-depends:
+    , aeson
+    , ansi-terminal
+    , base                 >=4.14 && <5
+    , base-compat
+    , base16
+    , bytestring
+    , cardano-binary
+    , cardano-prelude
+    , composition-prelude
+    , containers
+    , data-default
+    , data-default-class
+    , filepath
+    , generics-sop
+    , optics
+    , plutarch
+    , plutus-core
+    , plutus-ledger-api
+    , plutus-tx
+    , prettyprinter
+    , recursion-schemes
+    , serialise
+    , singletons
+    , singletons-th
+    , tagged
+    , template-haskell
+    , text
+
+common test-deps
+  build-depends:
+    , cryptonite
+    , data-default-class
+    , memory
+    , mtl
+    , QuickCheck
+    , quickcheck-instances
+    , tasty
+    , tasty-hedgehog
+    , tasty-hunit
+    , tasty-quickcheck
+    , universe
+    , universe-base
+
+common exe-opts
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -O0
+
+library
+  import:           lang, deps
+  exposed-modules:
+    Language.PureScript.Bridge
+    Language.PureScript.Bridge.Builder
+    Language.PureScript.Bridge.CtlImports
+    Language.PureScript.Bridge.Primitives
+    Language.PureScript.Bridge.Printer
+    Language.PureScript.Bridge.PSTypes
+    Language.PureScript.Bridge.Script
+    Language.PureScript.Bridge.SumType
+    Language.PureScript.Bridge.Tuple
+    Language.PureScript.Bridge.TypeInfo
+    Language.PureScript.Bridge.TypeParameters
+
+  build-depends:
+    , base
+    , containers
+    , directory
+    , filepath
+    , generic-deriving
+    , lens
+    , mtl
+    , text
+    , transformers
+
+  hs-source-dirs:   src
+  default-language: GHC2021
+
+executable example
+  import:        lang, deps
+  main-is:       example/Main.hs
+  build-depends:
+    , liqwid-plutarch-extra
+    , plutarch-ctl-bridge
