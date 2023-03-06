@@ -163,5 +163,6 @@ executable example
   import:        lang, deps
   main-is:       example/Main.hs
   build-depends:
+    , directory
     , liqwid-plutarch-extra
     , plutarch-ctl-bridge

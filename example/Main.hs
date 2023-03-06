@@ -24,6 +24,7 @@ import Plutarch.Extra.IsData (
 import Plutarch.Lift (PConstantDecl, PUnsafeLiftDecl (type PLifted))
 import PlutusLedgerApi.V1.Value (CurrencySymbol)
 import PlutusTx qualified
+import System.Directory (createDirectoryIfMissing)
 
 data Foo = Foo
   { foo :: Integer
@@ -70,4 +71,5 @@ typesToBridge =
 main :: IO ()
 main = do
   writePSTypes "./out" (buildBridge defaultBridge) typesToBridge
+  createDirectoryIfMissing True "./out/Example/Scripts"
   writeScriptModule "./out/Example/Scripts" "ExamplePolicy" "examplePolicy" SMinting examplePolicy
