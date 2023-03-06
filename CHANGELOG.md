@@ -4,6 +4,12 @@ This format is based on [Keep A Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## Unreleased
 
+## 1.3.0 - 2023-03-06
+
+- Fix example
+- Fix script export for very small scripts
+- Add flake.parts module
+
 ## 1.2.0 - 2023-03-06
 
 - Move to `liqwid-ctl-extra`
