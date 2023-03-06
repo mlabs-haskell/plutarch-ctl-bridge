@@ -50,7 +50,7 @@
           hasktags = { };
           shell.extraCommandLineTools = [
             inputs'.spago2nix.packages.spago2nix
-            inputs'.nixpkgs-fmt
+            pkgs.nixpkgs-fmt
           ];
           hoogleImage = { };
           enableBuildChecks = true;

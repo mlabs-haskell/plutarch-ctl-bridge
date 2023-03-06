@@ -1,11 +1,14 @@
 module Language.PureScript.Bridge.CtlImports (ctlBridge) where
 
 import Control.Applicative (asum)
+import Control.Lens (view)
 import Data.Text (Text)
-import Language.PureScript.Bridge.Builder (BridgePart, psTypeParameters, (^==))
+import Data.Text qualified as Text
+import Language.PureScript.Bridge.Builder (BridgePart, doCheck, psTypeParameters, (^==))
 import Language.PureScript.Bridge.TypeInfo (
   PSType,
   TypeInfo (TypeInfo, _typeModule, _typeName, _typePackage, _typeParameters),
+  haskType,
   typeModule,
   typeName,
  )
@@ -68,16 +71,17 @@ ctlBridge =
         "Contract.Scripts"
         [ "ScriptHash"
         ]
-    , overrideModuleFor
+    , overrideModuleFor'
         "Data.Tagged"
         "Ctl.Extra.Tagged"
-        [ "Tagged"
-        ]
+        "Tagged"
     , -- Override for 'Rational'. Type synonyms must be expanded by hand
       overrideModuleFor'
         "GHC.Real"
         "Data.Ratio"
         "Ratio"
+    , overrideTypeLitStrings
+    , overrideTypeLitNats
     ]
 
 -- | Override module and type name
@@ -116,3 +120,17 @@ overrideModuleForOneWithParams mOld mNew params tName = do
       , _typeName = tName
       , _typeParameters = params
       }
+
+overrideTypeLitStrings :: BridgePart
+overrideTypeLitStrings = do
+  doCheck typeName (\n -> "\"" `Text.isPrefixOf` n && "\"" `Text.isSuffixOf` n)
+  typeModule ^== "GHC.TypeLits"
+  n <- view (haskType . typeName)
+  pure $ TypeInfo "" "" n []
+
+overrideTypeLitNats :: BridgePart
+overrideTypeLitNats = do
+  doCheck typeName (\n -> Text.all (`elem` ['0' .. '9']) n)
+  typeModule ^== "GHC.TypeLits"
+  n <- view (haskType . typeName)
+  pure $ TypeInfo "" "" n []

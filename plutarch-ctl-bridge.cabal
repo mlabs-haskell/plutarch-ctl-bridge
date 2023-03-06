@@ -166,3 +166,4 @@ executable example
     , directory
     , liqwid-plutarch-extra
     , plutarch-ctl-bridge
+    , tagged
