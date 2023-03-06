@@ -22,4 +22,4 @@ hoo
 clear\ /
 
 # CTL bridge result
-auto-ctl-gen
+/out/
