@@ -71,6 +71,11 @@ ctlBridge =
         "Contract.Scripts"
         [ "ScriptHash"
         ]
+    , overrideModuleAndTypeName
+        "PlutusTx.Builtins.Internal"
+        "BuiltinData"
+        "Contract.PlutusData"
+        "PlutusData"
     , overrideModuleFor'
         "Data.Tagged"
         "Ctl.Extra.Tagged"
