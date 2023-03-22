@@ -111,6 +111,7 @@ moduleToText m =
 baselineImports :: [ImportLine]
 baselineImports =
   [ ImportLine "Data.Maybe" Nothing $ Set.fromList ["Maybe(Just, Nothing)"]
+  , ImportLine "Data.Functor" Nothing $ Set.fromList ["map"]
   , ImportLine "Data.Newtype" Nothing $ Set.fromList ["class Newtype"]
   , ImportLine "Data.Generic.Rep" Nothing $ Set.fromList ["class Generic"]
   , ImportLine "Contract.PlutusData" Nothing $ Set.fromList ["class FromData", "class ToData", "fromData", "toData", "genericFromData", "genericToData"]
@@ -337,10 +338,10 @@ instances st@(SumType t cs is) = map go is
         , "FromData "
         , typeInfoToText False t
         , " where\n"
-        , "  fromData = "
+        , "  fromData = map ("
         , case _sigValues constr of
-            Left [_] -> _sigConstructor constr <> " <<< fromData"
-            Right [r] -> _sigConstructor constr <> " <<< { " <> _recLabel r <> ": _}  <<< fromData"
+            Left [_] -> _sigConstructor constr <> ") <<< fromData"
+            Right [r] -> _sigConstructor constr <> " <<< { " <> _recLabel r <> ": _}) <<< fromData"
             _ -> error "not a newtype"
         , "\n"
         ]
