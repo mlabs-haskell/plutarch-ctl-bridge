@@ -113,7 +113,7 @@ baselineImports =
   , ImportLine "Data.Newtype" Nothing $ Set.fromList ["class Newtype"]
   , ImportLine "Data.Generic.Rep" Nothing $ Set.fromList ["class Generic"]
   , ImportLine "Contract.PlutusData" Nothing $ Set.fromList ["class FromData", "class ToData", "genericFromData", "genericToData"]
-  , ImportLine "Data.BigInt" (Just "BigInt") $ Set.fromList []
+  , ImportLine "Data.BigInt" (Just "BigInt") $ Set.fromList ["BigInt"]
   , ImportLine "Ctl.Internal.Types.PlutusData" Nothing $ Set.fromList ["PlutusData(Integer)"]
   , ImportLine "Ctl.Internal.Plutus.Types.DataSchema" Nothing $ Set.fromList ["class HasPlutusSchema", "type (:+)", "type (:=)", "type (@@)", "I", "PNil"]
   , ImportLine "Ctl.Internal.TypeLevel.Nat" Nothing $ Set.fromList ["S", "Z"]
@@ -127,8 +127,11 @@ importLineToText :: ImportLine -> Text
 importLineToText = \case
   ImportLine importModule Nothing importTypes ->
     "import " <> importModule <> " (" <> typeList importTypes <> ")"
-  ImportLine importModule (Just importAlias) _ ->
-    "import " <> importModule <> " as " <> importAlias
+  ImportLine importModule (Just importAlias) importTypes ->
+    ("import " <> importModule <> " as " <> importAlias)
+      <> if Set.null importTypes
+        then ""
+        else ("\n" <> "import " <> importModule <> " (" <> typeList importTypes <> ")")
   where
     typeList s = Text.intercalate ", " (Set.toList s)
 
