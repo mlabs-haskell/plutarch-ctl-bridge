@@ -4,6 +4,10 @@ This format is based on [Keep A Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## Unreleased
 
+## 1.7.0 - 2023-03-22
+
+- Fix `Integer -> BigInt`
+
 ## 1.6.0 - 2023-03-16
 
 - Bridge `BuiltinData -> PlutusData`

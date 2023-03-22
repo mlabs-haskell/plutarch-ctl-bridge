@@ -67,7 +67,7 @@ psInteger =
   TypeInfo
     { _typePackage = "bigints"
     , _typeModule = "Data.BigInt"
-    , _typeName = "BigInt.BigInt"
+    , _typeName = "BigInt"
     , _typeParameters = []
     }
 
