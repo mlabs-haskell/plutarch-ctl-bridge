@@ -113,7 +113,7 @@ baselineImports =
   [ ImportLine "Data.Maybe" Nothing $ Set.fromList ["Maybe(Just, Nothing)"]
   , ImportLine "Data.Newtype" Nothing $ Set.fromList ["class Newtype"]
   , ImportLine "Data.Generic.Rep" Nothing $ Set.fromList ["class Generic"]
-  , ImportLine "Contract.PlutusData" Nothing $ Set.fromList ["class FromData", "class ToData", "genericFromData", "genericToData"]
+  , ImportLine "Contract.PlutusData" Nothing $ Set.fromList ["class FromData", "class ToData", "fromData", "toData", "genericFromData", "genericToData"]
   , ImportLine "Data.BigInt" (Just "BigInt") $ Set.fromList ["BigInt"]
   , ImportLine "Ctl.Internal.Types.PlutusData" Nothing $ Set.fromList ["PlutusData(Integer)"]
   , ImportLine "Ctl.Internal.Plutus.Types.DataSchema" Nothing $ Set.fromList ["class HasPlutusSchema", "type (:+)", "type (:=)", "type (@@)", "I", "PNil"]

@@ -11,7 +11,7 @@
       inputs.plutarch.follows = "plutarch";
     };
     liqwid-libs = {
-      url = "github:Liqwid-Labs/liqwid-libs";
+      url = "github:Liqwid-Labs/liqwid-libs/050b2b6a3ee29dbba5bd43c38786b2947f45b2cb";
     };
     nix-filter.url = "github:numtide/nix-filter";
     spago2nix = {

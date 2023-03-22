@@ -978,6 +978,23 @@
     "easy-purescript-nix": {
       "flake": false,
       "locked": {
+        "lastModified": 1666686938,
+        "narHash": "sha256-/UOLRdnEhIOcxcm5ouOipOiSgHRzJde0ccAx4xB1dnU=",
+        "owner": "justinwoo",
+        "repo": "easy-purescript-nix",
+        "rev": "da7acb2662961fd355f0a01a25bd32bf33577fa8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "justinwoo",
+        "repo": "easy-purescript-nix",
+        "rev": "da7acb2662961fd355f0a01a25bd32bf33577fa8",
+        "type": "github"
+      }
+    },
+    "easy-purescript-nix_2": {
+      "flake": false,
+      "locked": {
         "lastModified": 1670198178,
         "narHash": "sha256-5KkyNpPakv4xIP2ba0S5GX+dcmd3AcO9kPhwa482BbA=",
         "owner": "justinwoo",
@@ -1187,11 +1204,11 @@
         "nixpkgs-lib": "nixpkgs-lib"
       },
       "locked": {
-        "lastModified": 1677714448,
-        "narHash": "sha256-Hq8qLs8xFu28aDjytfxjdC96bZ6pds21Yy09mSC156I=",
+        "lastModified": 1678379998,
+        "narHash": "sha256-TZdfNqftHhDuIFwBcN9MUThx5sQXCTeZk9je5byPKRw=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "dc531e3a9ce757041e1afaff8ee932725ca60002",
+        "rev": "c13d60b89adea3dc20704c045ec4d50dd964d447",
         "type": "github"
       },
       "original": {
@@ -2522,16 +2539,17 @@
         "ply": "ply"
       },
       "locked": {
-        "lastModified": 1678108408,
-        "narHash": "sha256-ib8Ye82TZjP5Uobe/zlSl+agMTq6gFfvw/k2RkLz9Cw=",
+        "lastModified": 1678823448,
+        "narHash": "sha256-vdaA8lP0AlUIKLlWfwkLoqix3eMxvFP4cDWEeyoFHHM=",
         "owner": "Liqwid-Labs",
         "repo": "liqwid-libs",
-        "rev": "5ecd5462d0bc478cbc11d60d7b508c941cccb93c",
+        "rev": "050b2b6a3ee29dbba5bd43c38786b2947f45b2cb",
         "type": "github"
       },
       "original": {
         "owner": "Liqwid-Labs",
         "repo": "liqwid-libs",
+        "rev": "050b2b6a3ee29dbba5bd43c38786b2947f45b2cb",
         "type": "github"
       }
     },
@@ -3834,11 +3852,11 @@
     "nixpkgs-lib": {
       "locked": {
         "dir": "lib",
-        "lastModified": 1677407201,
-        "narHash": "sha256-3blwdI9o1BAprkvlByHvtEm5HAIRn/XPjtcfiunpY7s=",
+        "lastModified": 1678375444,
+        "narHash": "sha256-XIgHfGvjFvZQ8hrkfocanCDxMefc/77rXeHvYdzBMc8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "7f5639fa3b68054ca0b062866dc62b22c3f11505",
+        "rev": "130fa0baaa2b93ec45523fdcde942f6844ee9f6e",
         "type": "github"
       },
       "original": {
@@ -4261,11 +4279,11 @@
     },
     "nixpkgs_22": {
       "locked": {
-        "lastModified": 1678137439,
-        "narHash": "sha256-paHsweIPm416wd6zedga133UTw71PzncJeRREcwQz9o=",
+        "lastModified": 1679511406,
+        "narHash": "sha256-5YP6KWUou0q4aZqyCAtniyC5uWW75pGejnigKpGfwN0=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f06733c932d2264ebd9441d6436e299ba456ac1f",
+        "rev": "5e21661aedf8a54e73825c5c901930000e539c77",
         "type": "github"
       },
       "original": {
@@ -4540,6 +4558,7 @@
     "ply": {
       "inputs": {
         "CHaP": "CHaP_2",
+        "easy-purescript-nix": "easy-purescript-nix",
         "flake-utils": "flake-utils_13",
         "haskellNix": "haskellNix",
         "nixpkgs": [
@@ -4551,16 +4570,16 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1672869303,
-        "narHash": "sha256-hX2nxIpyJWTqQnllc9bLIqQH3LXtLxof56TYkMPSOZ0=",
-        "owner": "mlabs-haskell",
+        "lastModified": 1676952116,
+        "narHash": "sha256-BuiXDtCxOZQCs0hHhBtHGNBIxFTZxbSSp+f0U8kP/+c=",
+        "owner": "liqwid-labs",
         "repo": "ply",
-        "rev": "2cda3b44f87c659980bea2bc0b4a822d1e9eaef4",
+        "rev": "623c017d2867147022283c6d4f6886a77bced09e",
         "type": "github"
       },
       "original": {
-        "owner": "mlabs-haskell",
-        "ref": "master",
+        "owner": "liqwid-labs",
+        "ref": "seungheonoh/purs",
         "repo": "ply",
         "type": "github"
       }
@@ -4627,7 +4646,7 @@
     },
     "spago2nix": {
       "inputs": {
-        "easy-purescript-nix": "easy-purescript-nix",
+        "easy-purescript-nix": "easy-purescript-nix_2",
         "flake-utils": "flake-utils_23",
         "nixpkgs": "nixpkgs_23"
       },
