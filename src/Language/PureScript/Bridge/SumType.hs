@@ -125,6 +125,7 @@ data DataEncodingFlavor
 defaultDataEncodingFlavor :: [DataConstructor lang] -> DataEncodingFlavor
 defaultDataEncodingFlavor constructors
   | [DataConstructor _ (Right [_])] <- constructors = DataEncodingNewtype
+  | [DataConstructor _ (Left [_])] <- constructors = DataEncodingNewtype
   | [DataConstructor _ (Right (_ : _))] <- constructors = DataEncodingProduct
   | isEnum constructors = DataEncodingEnum
   | otherwise = DataEncodingSoP

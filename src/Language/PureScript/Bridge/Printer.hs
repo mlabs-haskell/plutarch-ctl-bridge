@@ -49,6 +49,7 @@ import Language.PureScript.Bridge.SumType (
   _recLabel,
   _recValue,
   _sigConstructor,
+  _sigValues,
  )
 import Language.PureScript.Bridge.TypeInfo (
   Language (PureScript),
@@ -251,10 +252,35 @@ instances st@(SumType t cs is) = map go is
         ]
     go (ToData DataEncodingNewtype) =
       mconcat
-        [ "derive newtype instance ToData "
+        [ "instance toData"
+        , _typeName t
+        , " :: "
+        , constraintAllTyVars "ToData"
+        , "ToData "
         , typeInfoToText False t
+        , " where\n"
+        , "  toData ("
+        , _sigConstructor constr
+        , " "
+        , leftWrap
+        , either id id entry
+        , rightWrap
+        , ") = toData "
+        , either id id entry
         , "\n"
         ]
+      where
+        constr = head cs
+        entry = case _sigValues constr of
+          Left [_] -> Left "x"
+          Right [r] -> Right $ _recLabel r
+          _ -> error "not a newtype"
+        leftWrap = case entry of
+          Left _ -> ""
+          Right _ -> "{"
+        rightWrap = case entry of
+          Left _ -> ""
+          Right _ -> "}"
     go (ToData DataEncodingEnum) =
       mconcat
         [ "instance toData"
@@ -304,10 +330,22 @@ instances st@(SumType t cs is) = map go is
         ]
     go (FromData DataEncodingNewtype) =
       mconcat
-        [ "derive newtype instance FromData "
+        [ "instance fromData"
+        , _typeName t
+        , " :: "
+        , constraintAllTyVars "FromData"
+        , "FromData "
         , typeInfoToText False t
+        , " where\n"
+        , "  fromData = "
+        , case _sigValues constr of
+            Left [_] -> _sigConstructor constr <> " <<< fromData"
+            Right [r] -> _sigConstructor constr <> " <<< { " <> _recLabel r <> ": _}  <<< fromData"
+            _ -> error "not a newtype"
         , "\n"
         ]
+      where
+        constr = head cs
     go (FromData DataEncodingEnum) =
       mconcat
         [ "instance fromData"
