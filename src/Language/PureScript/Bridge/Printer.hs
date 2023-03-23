@@ -31,11 +31,13 @@ import Language.PureScript.Bridge.SumType (
     DataEncodingSoP
   ),
   Instance (
+    Eq,
     FieldOrder,
     FromData,
     Generic,
     HasPlutusSchema,
     Newtype,
+    Ord,
     Show,
     ToData
   ),
@@ -229,6 +231,8 @@ instances st@(SumType t cs is) = map go is
                     , " <> \")\""
                     ]
             ]
+    go (Eq flavor) = instanceBinOp "Eq" "eq" flavor
+    go (Ord flavor) = instanceBinOp "Ord" "compare" flavor
     go (ToData DataEncodingSoP) =
       mconcat
         [ "instance toData"
@@ -449,6 +453,79 @@ instances st@(SumType t cs is) = map go is
         sumTypeParameters = filter (isTypeParam t) . Set.toList $ getUsedTypes st
         genericConstraintsInner = Text.intercalate ", " $ map genericInstance sumTypeParameters
         bracketWrap x = "(" <> x <> ")"
+
+    instanceBinOp :: Text -> Text -> DataEncodingFlavor -> Text
+    instanceBinOp className methodName = \case
+      DataEncodingSoP -> "-- FIXME: Not implemented\n"
+      DataEncodingProduct ->
+        mconcat
+          [ "instance "
+          , Text.toLower className
+          , _typeName t
+          , " :: "
+          , constraintAllTyVars className
+          , className
+          , " "
+          , typeInfoToText False t
+          , " where\n"
+          , "  "
+          , methodName
+          , " "
+          , "("
+          , _sigConstructor constr
+          , " lhs) ("
+          , _sigConstructor constr
+          , " rhs) = "
+          , methodName
+          , " lhs rhs\n"
+          ]
+        where
+          constr = head cs
+      DataEncodingNewtype ->
+        mconcat
+          [ "instance "
+          , Text.toLower className
+          , _typeName t
+          , " :: "
+          , constraintAllTyVars className
+          , className
+          , " "
+          , typeInfoToText False t
+          , " where\n"
+          , "  "
+          , methodName
+          , " "
+          , "("
+          , _sigConstructor constr
+          , " lhs) ("
+          , _sigConstructor constr
+          , " rhs) = "
+          , methodName
+          , " lhs rhs\n"
+          ]
+        where
+          constr = head cs
+      DataEncodingEnum ->
+        mconcat
+          [ "instance "
+          , Text.toLower className
+          , _typeName t
+          , " :: "
+          , constraintAllTyVars className
+          , className
+          , " "
+          , typeInfoToText False t
+          , " where\n"
+          , "  "
+          , methodName
+          , " lhs rhs = "
+          , methodName
+          , " ("
+          , typeInfoToText False t <> "ToInt"
+          , " lhs) ("
+          , typeInfoToText False t <> "ToInt"
+          , " rhs)\n"
+          ]
 
 isTypeParam :: PSType -> PSType -> Bool
 isTypeParam t typ = _typeName typ `elem` map _typeName (_typeParameters t)

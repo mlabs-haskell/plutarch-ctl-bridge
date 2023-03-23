@@ -14,8 +14,6 @@ module Language.PureScript.Bridge.SumType (
   mkSumTypeWithEncoding,
   DataEncodingFlavor (..),
   defaultDataEncodingFlavor,
-  equal,
-  order,
   DataConstructor (..),
   RecordEntry (..),
   Instance (..),
@@ -31,7 +29,6 @@ module Language.PureScript.Bridge.SumType (
 ) where
 
 import Control.Lens (makeLenses)
-import Data.List (nub)
 import Data.Maybe (maybeToList)
 import Data.Proxy (Proxy (Proxy))
 import Data.Set (Set)
@@ -112,7 +109,16 @@ mkSumTypeWithEncoding encodingFlavor p = SumType (mkTypeInfo p) constructors ins
       _ -> []
     instances = case constructors of
       [] -> []
-      _ -> [Generic, Show, ToData encodingFlavor, FromData encodingFlavor] <> plutusInstances <> maybeToList (nootype constructors)
+      _ ->
+        [ Generic
+        , Show
+        , ToData encodingFlavor
+        , FromData encodingFlavor
+        , Eq encodingFlavor
+        , Ord encodingFlavor
+        ]
+          <> plutusInstances
+          <> maybeToList (nootype constructors)
 
 data DataEncodingFlavor
   = DataEncodingSoP
@@ -142,8 +148,8 @@ defaultDataEncodingFlavor constructors
 data Instance
   = Generic
   | Newtype
-  | Eq
-  | Ord
+  | Eq DataEncodingFlavor
+  | Ord DataEncodingFlavor
   | Show
   | ToData DataEncodingFlavor
   | FromData DataEncodingFlavor
@@ -163,14 +169,6 @@ nootype cs = case cs of
   where
     isSingletonList [_] = True
     isSingletonList _ = False
-
--- | Ensure that an `Eq` instance is generated for your type.
-equal :: Eq a => Proxy a -> SumType t -> SumType t
-equal _ (SumType ti dc is) = SumType ti dc . nub $ Eq : is
-
--- | Ensure that both `Eq` and `Ord` instances are generated for your type.
-order :: Ord a => Proxy a -> SumType t -> SumType t
-order _ (SumType ti dc is) = SumType ti dc . nub $ Eq : Ord : is
 
 data DataConstructor (lang :: Language) = DataConstructor
   { _sigConstructor :: !Text
