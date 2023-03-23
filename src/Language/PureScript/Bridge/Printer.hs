@@ -11,6 +11,7 @@ module Language.PureScript.Bridge.Printer (
 
 import Control.Lens (view)
 import Control.Monad (unless)
+import Data.Char (toLower)
 import Data.Map.Strict (Map)
 import Data.Map.Strict qualified as Map
 import Data.Maybe (fromMaybe, isJust)
@@ -288,28 +289,39 @@ instances st@(SumType t cs is) = map go is
           Right _ -> "}"
     go (ToData DataEncodingEnum) =
       mconcat
-        [ "instance toData"
+        [ toIntFunc
+        , " :: "
+        , typeInfoToText False t
+        , " -> BigInt\n"
+        , enumToInt cs 0
+        , "\n"
+        , "instance toData"
         , _typeName t
         , " :: "
         , constraintAllTyVars "ToData"
         , "ToData "
         , typeInfoToText False t
         , " where\n"
-        , enumToData cs 0
+        , "  toData = toData <<< Integer <<< "
+        , toIntFunc
+        , "\n"
         ]
       where
-        enumToData :: [DataConstructor lang] -> Int -> Text
-        enumToData [] _ = ""
-        enumToData (constr : constrs) idx = do
+        toIntFunc = (firstToLower $ _typeName t) <> "ToInt"
+
+        enumToInt :: [DataConstructor lang] -> Int -> Text
+        enumToInt [] _ = ""
+        enumToInt (constr : constrs) idx = do
           let thisCondition :: Text =
                 mconcat
-                  [ "  toData "
+                  [ toIntFunc
+                  , " "
                   , _sigConstructor constr
-                  , " = Integer $ BigInt.fromInt "
+                  , " = BigInt.fromInt "
                   , Text.pack (show idx)
                   , "\n"
                   ]
-              restOfConditions :: Text = enumToData constrs (idx + 1)
+              restOfConditions :: Text = enumToInt constrs (idx + 1)
            in thisCondition <> restOfConditions
     go (FromData DataEncodingSoP) =
       mconcat
@@ -454,6 +466,11 @@ instances st@(SumType t cs is) = map go is
         genericConstraintsInner = Text.intercalate ", " $ map genericInstance sumTypeParameters
         bracketWrap x = "(" <> x <> ")"
 
+    firstToLower :: Text -> Text
+    firstToLower t = case Text.uncons t of
+      Just (h, t') -> Text.cons (toLower h) t'
+      Nothing -> t
+
     instanceBinOp :: Text -> Text -> DataEncodingFlavor -> Text
     instanceBinOp className methodName = \case
       DataEncodingSoP -> "-- FIXME: Not implemented\n"
@@ -521,9 +538,9 @@ instances st@(SumType t cs is) = map go is
           , " lhs rhs = "
           , methodName
           , " ("
-          , typeInfoToText False t <> "ToInt"
+          , (firstToLower $ typeInfoToText False t) <> "ToInt"
           , " lhs) ("
-          , typeInfoToText False t <> "ToInt"
+          , (firstToLower $ typeInfoToText False t) <> "ToInt"
           , " rhs)\n"
           ]
 

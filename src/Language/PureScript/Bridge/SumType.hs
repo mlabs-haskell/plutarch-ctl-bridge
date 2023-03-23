@@ -13,6 +13,8 @@ module Language.PureScript.Bridge.SumType (
   mkSumType,
   mkSumTypeWithEncoding,
   DataEncodingFlavor (..),
+  withoutEq,
+  withoutOrd,
   defaultDataEncodingFlavor,
   DataConstructor (..),
   RecordEntry (..),
@@ -156,6 +158,18 @@ data Instance
   | HasPlutusSchema
   | FieldOrder
   deriving stock (Eq, Show)
+
+withoutEq :: SumType lang -> SumType lang
+withoutEq (SumType info constrs is) = withoutOrd $ SumType info constrs (filter (not . isEq) is)
+  where
+    isEq (Eq _) = True
+    isEq _ = False
+
+withoutOrd :: SumType lang -> SumType lang
+withoutOrd (SumType info constrs is) = SumType info constrs (filter (not . isOrd) is)
+  where
+    isOrd (Ord _) = True
+    isOrd _ = False
 
 {- | The Purescript typeclass `Newtype` might be derivable if the original
  Haskell type was a simple type wrapper.
