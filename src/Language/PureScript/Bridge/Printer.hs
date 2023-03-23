@@ -232,8 +232,27 @@ instances st@(SumType t cs is) = map go is
                     , " <> \")\""
                     ]
             ]
-    go (Eq flavor) = instanceBinOp "Eq" "eq" flavor
-    go (Ord flavor) = instanceBinOp "Ord" "compare" flavor
+
+    -- derive instance eqMaybe :: Eq a => Eq (Maybe a)
+    go (Eq _flavor) =
+      mconcat
+        [ "derive instance eq"
+        , _typeName t
+        , " :: "
+        , constraintAllTyVars "Eq"
+        , "Eq "
+        , typeInfoToText True t
+        ]
+    -- derive instance ordMaybe :: Ord a => Ord (Maybe a)
+    go (Ord _flavor) =
+      mconcat
+        [ "derive instance ord"
+        , _typeName t
+        , " :: "
+        , constraintAllTyVars "Ord"
+        , "Ord "
+        , typeInfoToText True t
+        ]
     go (ToData DataEncodingSoP) =
       mconcat
         [ "instance toData"
@@ -470,79 +489,6 @@ instances st@(SumType t cs is) = map go is
     firstToLower t = case Text.uncons t of
       Just (h, t') -> Text.cons (toLower h) t'
       Nothing -> t
-
-    instanceBinOp :: Text -> Text -> DataEncodingFlavor -> Text
-    instanceBinOp className methodName = \case
-      DataEncodingSoP -> "-- FIXME: Not implemented\n"
-      DataEncodingProduct ->
-        mconcat
-          [ "instance "
-          , Text.toLower className
-          , _typeName t
-          , " :: "
-          , constraintAllTyVars className
-          , className
-          , " "
-          , typeInfoToText False t
-          , " where\n"
-          , "  "
-          , methodName
-          , " "
-          , "("
-          , _sigConstructor constr
-          , " lhs) ("
-          , _sigConstructor constr
-          , " rhs) = "
-          , methodName
-          , " lhs rhs\n"
-          ]
-        where
-          constr = head cs
-      DataEncodingNewtype ->
-        mconcat
-          [ "instance "
-          , Text.toLower className
-          , _typeName t
-          , " :: "
-          , constraintAllTyVars className
-          , className
-          , " "
-          , typeInfoToText False t
-          , " where\n"
-          , "  "
-          , methodName
-          , " "
-          , "("
-          , _sigConstructor constr
-          , " lhs) ("
-          , _sigConstructor constr
-          , " rhs) = "
-          , methodName
-          , " lhs rhs\n"
-          ]
-        where
-          constr = head cs
-      DataEncodingEnum ->
-        mconcat
-          [ "instance "
-          , Text.toLower className
-          , _typeName t
-          , " :: "
-          , constraintAllTyVars className
-          , className
-          , " "
-          , typeInfoToText False t
-          , " where\n"
-          , "  "
-          , methodName
-          , " lhs rhs = "
-          , methodName
-          , " ("
-          , (firstToLower $ typeInfoToText False t) <> "ToInt"
-          , " lhs) ("
-          , (firstToLower $ typeInfoToText False t) <> "ToInt"
-          , " rhs)\n"
-          ]
 
 isTypeParam :: PSType -> PSType -> Bool
 isTypeParam t typ = _typeName typ `elem` map _typeName (_typeParameters t)
