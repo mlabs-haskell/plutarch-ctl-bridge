@@ -71,6 +71,10 @@ ctlBridge =
         "Contract.Scripts"
         [ "ScriptHash"
         ]
+    , overrideModuleFor'
+        "Plutarch.Extra.AssetClass"
+        "Ctl.Extra.AssetClass"
+        "AssetClass"
     , overrideModuleAndTypeName
         "PlutusTx.Builtins.Internal"
         "BuiltinData"
