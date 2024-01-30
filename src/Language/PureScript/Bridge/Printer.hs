@@ -423,16 +423,27 @@ instances st@(SumType t cs is) = map go is
               , " )\n"
               ]
 
+        goContr :: [DataConstructor 'PureScript] -> Int -> Text
         goContr [] _ = "PNil"
         goContr (constr : rest) idx =
           mconcat
             [ "\""
             , _sigConstructor constr
-            , "\" := PNil @@ "
+            , "\" := ("
+            , Text.intercalate " :+ " $ goFields constr
+            , ") @@ "
             , intToPeano idx
             , " :+ "
             , goContr rest (idx + 1)
             ]
+
+        goFields :: DataConstructor 'PureScript -> [Text]
+        goFields (DataConstructor _ (Left [])) = ["PNil"]
+        goFields (DataConstructor _ (Right [])) = ["PNil"]
+        goFields (DataConstructor _ (Left _)) = error "TODO: Fix unnamed products"
+        goFields (DataConstructor c (Right ((RecordEntry fieldName fieldType) : otherFields))) =
+          (mconcat ["( \"", fieldName, "\" := I ", typeInfoToText False fieldType, " )"])
+            : goFields (DataConstructor c (Right otherFields))
 
         intToPeano :: Int -> Text
         intToPeano i
