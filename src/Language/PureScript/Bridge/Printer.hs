@@ -240,9 +240,8 @@ instances st@(SumType t cs is) = map go is
         , _typeName t
         , " :: "
         , constraintAllTyVars "Eq"
-        , "Eq ("
-        , typeInfoToText True t
-        , ")"
+        , "Eq "
+        , typeInfoToText False t
         ]
     -- derive instance ordMaybe :: Ord a => Ord (Maybe a)
     go (Ord _flavor) =
@@ -252,7 +251,7 @@ instances st@(SumType t cs is) = map go is
         , " :: "
         , constraintAllTyVars "Ord"
         , "Ord "
-        , typeInfoToText True t
+        , typeInfoToText False t
         ]
     go (ToData DataEncodingSoP) =
       mconcat
