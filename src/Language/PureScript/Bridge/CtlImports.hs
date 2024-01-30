@@ -84,6 +84,11 @@ ctlBridge =
         "Data.Tagged"
         "Ctl.Extra.Tagged"
         "Tagged"
+    , overrideModuleAndTypeName
+        "PlutusTx.Builtins.Internal"
+        "BuiltinByteString"
+        "Contract.Prim.ByteArray"
+        "ByteArray"
     , -- Override for 'Rational'. Type synonyms must be expanded by hand
       overrideModuleFor'
         "GHC.Real"
