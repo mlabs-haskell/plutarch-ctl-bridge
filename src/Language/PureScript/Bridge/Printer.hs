@@ -240,8 +240,9 @@ instances st@(SumType t cs is) = map go is
         , _typeName t
         , " :: "
         , constraintAllTyVars "Eq"
-        , "Eq "
+        , "Eq ("
         , typeInfoToText True t
+        , ")"
         ]
     -- derive instance ordMaybe :: Ord a => Ord (Maybe a)
     go (Ord _flavor) =
