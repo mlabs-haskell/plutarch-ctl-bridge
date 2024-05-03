@@ -35,7 +35,7 @@ import Language.PureScript.Bridge.Printer (
   typesToImportLines,
  )
 import Language.PureScript.Bridge.TypeInfo (HaskellType, PSType, mkTypeInfo)
-import Plutarch (Config (Config), TracingMode (DoTracingAndBinds, NoTracing), compile)
+import Plutarch (Config (Config), TracingMode (DetTracing, NoTracing), compile)
 import Plutarch.Api.V2 (PMintingPolicy, PStakeValidator, PValidator)
 import Plutarch.Lift (PLifted)
 import Plutarch.Script (serialiseScript)
@@ -115,7 +115,7 @@ generateModule moduleName scriptName script scriptType =
       [ "module " <> moduleName <> " where\n\n"
       , Text.unlines paramsImports <> "\n"
       , exportScriptWith (Config NoTracing) scriptName script <> "\n"
-      , exportScriptWith (Config DoTracingAndBinds) (scriptName <> "Debug") script <> "\n"
+      , exportScriptWith (Config DetTracing) (scriptName <> "Debug") script <> "\n"
       , wrapTypedScript script scriptType psScriptArgumentsTypes scriptName <> "\n"
       , wrapTypedScript script scriptType psScriptArgumentsTypes (scriptName <> "Debug") <> "\n"
       ]
