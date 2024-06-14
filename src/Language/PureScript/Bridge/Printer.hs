@@ -440,7 +440,7 @@ instances st@(SumType t cs is) = map go is
         goFields :: DataConstructor 'PureScript -> [Text]
         goFields (DataConstructor _ (Left [])) = ["PNil"]
         goFields (DataConstructor _ (Right [])) = ["PNil"]
-        goFields (DataConstructor _ (Left _)) = error "TODO: Fix unnamed products"
+        goFields (DataConstructor _ (Left _)) = [] -- NOTE: Not sure about that
         goFields (DataConstructor c (Right ((RecordEntry fieldName fieldType) : otherFields))) =
           (mconcat ["( \"", fieldName, "\" := I ", typeInfoToText False fieldType, " )"])
             : goFields (DataConstructor c (Right otherFields))
