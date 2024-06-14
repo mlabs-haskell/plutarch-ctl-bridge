@@ -429,20 +429,25 @@ instances st@(SumType t cs is) = map go is
           mconcat
             [ "\""
             , _sigConstructor constr
-            , "\" := ("
-            , Text.intercalate " :+ " $ goFields constr
-            , ") @@ "
+            , goFields' constr
             , intToPeano idx
             , " :+ "
             , goContr rest (idx + 1)
             ]
 
-        goFields :: DataConstructor 'PureScript -> [Text]
-        goFields (DataConstructor _ (Right [])) = ["PNil"]
-        goFields (DataConstructor _ (Left _)) = [] -- NOTE: Not sure about that
-        goFields (DataConstructor c (Right ((RecordEntry fieldName fieldType) : otherFields))) =
+        goFields' :: DataConstructor 'PureScript -> Text
+        goFields' (DataConstructor _ (Left _)) = "\" := PNil @@ "
+        goFields' (DataConstructor c (Right fields)) = mconcat
+          [ "\" := ("
+          , Text.intercalate " :+ " $ goFields (c, fields)
+          , ") @@ "
+          ]
+
+        goFields :: (Text, [RecordEntry 'PureScript]) -> [Text]
+        goFields (_, []) = ["PNil"]
+        goFields (c, (RecordEntry fieldName fieldType) : otherFields) =
           (mconcat ["( \"", fieldName, "\" := I ", typeInfoToText False fieldType, " )"])
-            : goFields (DataConstructor c (Right otherFields))
+            : goFields (c, otherFields)
 
         intToPeano :: Int -> Text
         intToPeano i
