@@ -437,11 +437,12 @@ instances st@(SumType t cs is) = map go is
 
         goFields' :: DataConstructor 'PureScript -> Text
         goFields' (DataConstructor _ (Left _)) = "\" := PNil @@ "
-        goFields' (DataConstructor c (Right fields)) = mconcat
-          [ "\" := ("
-          , Text.intercalate " :+ " $ goFields (c, fields)
-          , ") @@ "
-          ]
+        goFields' (DataConstructor c (Right fields)) =
+          mconcat
+            [ "\" := ("
+            , Text.intercalate " :+ " $ goFields (c, fields)
+            , ") @@ "
+            ]
 
         goFields :: (Text, [RecordEntry 'PureScript]) -> [Text]
         goFields (_, []) = ["PNil"]
